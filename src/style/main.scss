@@ -1,0 +1,18 @@
+
+html, body{
+  height: 110%;
+}
+
+#blocks {
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    z-index: 1;
+    margin: 10px 0;
+    top:-20px;
+}
+
+#blocks svg {
+    width: 100%;
+    height: 100%;
+}

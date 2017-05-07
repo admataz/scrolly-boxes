@@ -12,18 +12,7 @@ var colours = [
 
 var ylimit = 12,
   scale = 12,
-  blocks = [],
-  containerWidth = 640,
-  containerHeight = 200,
-  xoffset = 0,
-  yoffset = 0,
-  scrollTop = 0;
-
-// console.log('this is the building block!');
-
-function elastic(x) {
-  return -1 * Math.pow(4, -8 * x) * Math.sin((x * 6 - 1) * (2 * Math.PI) / 2) + 1;
-}
+  blocks = [];
 
 
 function getContainerWidth() {
@@ -54,13 +43,15 @@ function xlimit() {
 
 
 function makeBlocks(yoffset) {
-  // console.log(yoffset);
-  var xpos,
-    ypos;
+  var xpos;
+  var ypos;
+  var xoffset = 0;
+  var yoffset = 0;
+
+
 
 
   if (!blocks.length) {
-
     for (let y = 1; y < ylimit; y++) {
       for (let x = 0; x < (xlimit() / 4); x++) {
         if (y && Math.random() < 0.7) {
@@ -91,8 +82,6 @@ function makeBlocks(yoffset) {
   }
 
   return blocks;
-// console.log(output.length);
-// return output;
 }
 
 

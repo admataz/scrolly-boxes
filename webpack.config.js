@@ -1,12 +1,13 @@
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
-  entry: [
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
-    './src/index.js'
-  ],
+  entry: {
+    'webpack-dev-server-client': 'webpack-dev-server/client?http://localhost:8080',
+    'webpack-hot-only-dev-server': 'webpack/hot/only-dev-server',
+    'admataz-scroll-boxes': './src/index.js'
+  },
   module: {
     loaders: [{
         test: /\.jsx?$/,
@@ -31,7 +32,9 @@ module.exports = {
   output: {
     path: `${__dirname}/dist`,
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js',
+    libraryTarget: 'umd',
+    library: 'admataz-scroll-boxes'
   },
   devServer: {
     contentBase: './dist',
@@ -43,6 +46,13 @@ module.exports = {
       to: `${__dirname}/dist`,
       flatten: true
     }, ]),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: function (module) {
+            // this assumes your vendor imports exist in the node_modules directory
+            return module.context && module.context.indexOf('node_modules') !== -1;
+        }
+    })
   ],
 
   devtool: 'cheap-module-source-map', // faster than 'source-map'

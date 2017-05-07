@@ -1,10 +1,13 @@
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: [
-    './src/index.js'
-  ],
+  entry: 
+    {
+      'admataz-scroll-boxes':'./src/index.js'
+    },
   module: {
     loaders: [{
         test: /\.jsx?$/,
@@ -27,9 +30,10 @@ module.exports = {
     extensions: ['*', '.js', '.jsx']
   },
   output: {
-    path: `${__dirname}/dist`,
-    publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'umd',
+    library: 'admataz-scroll-boxes'
   },
   plugins: [
     new CopyWebpackPlugin([{
@@ -37,7 +41,14 @@ module.exports = {
       to: `${__dirname}/dist`,
       flatten: true
     }, ]),
-  ],
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: function (module) {
+            // this assumes your vendor imports exist in the node_modules directory
+            return module.context && module.context.indexOf('node_modules') !== -1;
+        }
+    })
+  ]
 
-  devtool: 'cheap-module-source-map', // faster than 'source-map'
+  // devtool: 'cheap-module-source-map', // faster than 'source-map'
 };
